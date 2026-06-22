@@ -19,7 +19,7 @@ public class BagagemFactory {
 
         // Campos gerados automaticamente
         bagagem.setCodigoEtiqueta(gerarCodigoEtiqueta());
-   //     bagagem.setStatus(StatusBagagem.REGISTRADA);
+        bagagem.setStatus(StatusBagagem.DESPACHADA);
         bagagem.setDataRegistro(LocalDateTime.now());
 
         return bagagem;

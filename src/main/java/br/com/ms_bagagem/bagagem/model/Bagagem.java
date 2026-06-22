@@ -4,6 +4,7 @@ import br.com.ms_bagagem.bagagem.enuns.StatusBagagem;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 public class Bagagem {
@@ -19,13 +20,10 @@ public class Bagagem {
     private String nomePassageiro;
 
     @Column(nullable = false)
-    private String voo;
+    private UUID voo;
 
-    /*
     @Enumerated(EnumType.STRING)
     private StatusBagagem status;
-
-     */
 
     private String localizacaoAtual;
 
@@ -33,11 +31,7 @@ public class Bagagem {
 
     private double peso;
 
-    /*
-    @ManyToOne
-    private CheckIn checkIn;
-
-     */
+    private UUID checkIn;
 
     public Long getId() {
         return id;
@@ -63,13 +57,22 @@ public class Bagagem {
         this.nomePassageiro = nomePassageiro;
     }
 
-    public String getVoo() {
+    public UUID getVoo() {
         return voo;
     }
 
-    public void setVoo(String voo) {
+    public void setVoo(UUID voo) {
         this.voo = voo;
     }
+
+    public StatusBagagem getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusBagagem status) {
+        this.status = status;
+    }
+
     public String getLocalizacaoAtual() {
         return localizacaoAtual;
     }
@@ -94,4 +97,11 @@ public class Bagagem {
         this.peso = peso;
     }
 
+    public UUID getCheckIn() {
+        return checkIn;
+    }
+
+    public void setCheckIn(UUID checkIn) {
+        this.checkIn = checkIn;
+    }
 }
