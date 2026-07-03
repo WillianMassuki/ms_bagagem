@@ -1,0 +1,65 @@
+version: '3.9'
+
+services:
+
+  postgres:
+    image: postgres:17
+    container_name: postgres_bagagem
+
+    restart: always
+
+    environment:
+      POSTGRES_DB: bagagem
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d bagagem"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ms_bagagem:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: ms_bagagem
+
+    restart: always
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    ports:
+      - "8080:8080"
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bagagem
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+
+    networks:
+      - bagagem-network
+
+  # adicionando o postgres na mesma rede
+  postgres-network:
+    image: alpine
+    command: tail -f /dev/null
+    networks:
+      - bagagem-network
+
+networks:
+  bagagem-network:
+
+volumes:
+  postgres_data:
